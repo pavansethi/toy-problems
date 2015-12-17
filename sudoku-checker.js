@@ -11,6 +11,7 @@ var boardStr =
 
 function sudokuCheck(boardStr) {
   var result = 'solved';
+  var chunk = 9;
   var board = boardStr.split('\n').map(function(row) {
     return row.split('').map(function(num) {
       return num;
@@ -33,17 +34,47 @@ function sudokuCheck(boardStr) {
   }
   cols.map(function(col) {
     if (!validate(col)) {
-      return 'invalid';
+      result = 'invalid';
     };
   })
 
   // Check 3x3s
-  //     var threes = [];
-  //     var threes = board.map(function(row) {
-  //         return row.slice(0, 3)
-  //     })
+  var threes = [];
+  var finalThrees = [];
+//   var master = [];
 
-  //     console.log(threes);
+  var master = board.map(function(row) {
+    console.log(row)
+    return splitByChunk(row, 3)
+  })
+
+//   console.log(master)
+
+  function splitByChunk(row, chunk) {
+    var output = [];
+    for (var i = 0, j = row.length; i < j; i += chunk) {
+        temparray = row.slice(i,i+chunk);
+        output.push(temparray);
+    }
+    return output;
+  }
+
+//   console.log(threes)
+
+  var j;
+  for (var i = 0, j = threes.length; i < j; i += chunk) {
+      temparray = threes.slice(i,i+chunk);
+      finalThrees.push(temparray);
+  }
+
+//   console.log(finalThrees)
+
+  finalThrees.forEach(function(three) {
+    if (!validate(three)) {
+      result = 'invalid';
+    }
+  });
+
   return result;
 }
 
